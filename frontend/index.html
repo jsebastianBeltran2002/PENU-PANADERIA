@@ -3,67 +3,45 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Pan de la Casa</title>
-  <style>
-    body { font-family: system-ui, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; color: #3b2a1a; background: #fff8ee; }
-    h1 { color: #a0522d; }
-    .prod { display: flex; justify-content: space-between; align-items: center; padding: .6rem 0; border-bottom: 1px solid #e8d9c3; }
-    .prod img { width: 64px; height: 64px; object-fit: cover; border-radius: 8px; margin-right: 1rem; background: #eadbc4; }
-    .prod .info { flex: 1; display: flex; align-items: center; }
-    input { padding: .4rem; }
-    input[type=number] { width: 4rem; }
-    button { background: #a0522d; color: #fff; border: 0; padding: .6rem 1.2rem; border-radius: 6px; cursor: pointer; margin-top: 1rem; }
-    #msg { margin-top: 1rem; font-weight: 600; }
-  </style>
+  <title>Pan de la Casa · Pedidos para recoger</title>
+  <meta name="description" content="Haz tu pedido en Pan de la Casa y recógelo a la hora que prefieras.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🥐</text></svg>">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>Pan de la Casa</h1>
-  <p>Elige tus productos y la hora de recogida.</p>
-  <div id="catalogo">Cargando catalogo...</div>
-  <h2>Tu pedido</h2>
-  <label>Nombre <input id="nombre"></label>
-  <label>Hora de recogida <input id="hora" type="time"></label><br>
-  <button id="enviar">Hacer pedido</button>
-  <div id="msg"></div>
+  <header class="hero">
+    <nav class="topbar">
+      <span class="marca-icono" aria-hidden="true">🥐</span>
+      <span class="marca">Pan de la Casa</span>
+    </nav>
+    <div class="hero-contenido">
+      <h1>Pan recién horneado,<br>listo cuando llegues</h1>
+      <p>Elige tus productos, dinos a qué hora pasas y te lo tenemos listo para recoger.</p>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="panel" aria-labelledby="titulo-catalogo">
+      <h2 id="titulo-catalogo">Nuestro catálogo</h2>
+      <div id="catalogo">Cargando catálogo...</div>
+    </section>
+
+    <aside class="panel pedido" aria-labelledby="titulo-pedido">
+      <h2 id="titulo-pedido">Tu pedido</h2>
+      <label class="campo">Nombre
+        <input id="nombre" autocomplete="name" placeholder="¿A nombre de quién?">
+      </label>
+      <label class="campo">Hora de recogida
+        <input id="hora" type="time">
+      </label>
+      <button id="enviar" class="boton">Hacer pedido</button>
+      <div id="msg" role="status"></div>
+    </aside>
+  </main>
+
+  <footer class="pie">Pan de la Casa · Pedidos web para recoger en tienda</footer>
 
   <script src="config.js"></script>
-  <script>
-    // config.js lo genera el pipeline con la URL de la API desplegada
-    const API = (window.API_URL || "").replace(/\/$/, "");
-    let productos = [];
-
-    async function cargar() {
-      try {
-        const r = await fetch(API + "/products");
-        productos = await r.json();
-        document.getElementById("catalogo").innerHTML = productos.map(p => `
-          <div class="prod">
-            <div class="info">
-              <img src="${p.image_url || ''}" alt="" onerror="this.style.visibility='hidden'">
-              <div><strong>${p.name}</strong><br>$${Number(p.price).toLocaleString("es-CO")}</div>
-            </div>
-            <input type="number" min="0" value="0" data-id="${p.product_id}">
-          </div>`).join("");
-      } catch (e) {
-        document.getElementById("catalogo").textContent = "No se pudo cargar el catalogo";
-      }
-    }
-
-    document.getElementById("enviar").onclick = async () => {
-      const items = [...document.querySelectorAll("input[data-id]")]
-        .map(i => ({ product_id: i.dataset.id, qty: parseInt(i.value, 10) }))
-        .filter(i => i.qty > 0);
-      const body = {
-        customer_name: document.getElementById("nombre").value,
-        pickup_time: document.getElementById("hora").value,
-        items
-      };
-      const r = await fetch(API + "/orders", { method: "POST", body: JSON.stringify(body) });
-      const data = await r.json();
-      document.getElementById("msg").textContent =
-        r.ok ? "Pedido recibido: " + data.order_id : "Error: " + data.error;
-    };
-    cargar();
-  </script>
+  <script src="app.js"></script>
 </body>
 </html>
