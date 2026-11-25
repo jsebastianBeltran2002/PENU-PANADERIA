@@ -1,0 +1,65 @@
+name: CI/CD Pan de la Casa
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  test:
+    name: Lint y pruebas
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pytest flake8
+      - name: Lint
+        run: flake8 lambda tests --max-line-length=100
+      - name: Pruebas unitarias (bloquean el despliegue)
+        run: pytest -q
+
+  security:
+    name: Analisis de seguridad (Checkov)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: bridgecrewio/checkov-action@v12
+        with:
+          directory: infra
+          framework: terraform
+          soft_fail: true
+
+  deploy:
+    name: Deploy en Floci + smoke test
+    needs: [test, security]
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: test
+      AWS_SECRET_ACCESS_KEY: test
+      AWS_DEFAULT_REGION: us-east-1
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+      - name: Levantar Floci
+        run: |
+          docker run -d --name floci -p 4566:4566 \
+            -v /var/run/docker.sock:/var/run/docker.sock floci/floci:latest
+          for i in $(seq 1 30); do
+            curl -fs http://localhost:4566/ >/dev/null && break || sleep 2
+          done
+      - name: Desplegar
+        run: bash scripts/deploy.sh
+      - name: Smoke test
+        run: bash scripts/smoke_test.sh
+      - name: Logs de Floci si falla
+        if: failure()
+        run: docker logs floci | tail -100

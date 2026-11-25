@@ -1,0 +1,8 @@
+{
+  "products": [
+    {"PutRequest": {"Item": {"product_id": {"S": "p1"}, "name": {"S": "Croissant"}, "price": {"N": "4000"}, "image_url": {"S": ""}}}},
+    {"PutRequest": {"Item": {"product_id": {"S": "p2"}, "name": {"S": "Pan de bono"}, "price": {"N": "2500"}, "image_url": {"S": ""}}}},
+    {"PutRequest": {"Item": {"product_id": {"S": "p3"}, "name": {"S": "Pan frances"}, "price": {"N": "1200"}, "image_url": {"S": ""}}}},
+    {"PutRequest": {"Item": {"product_id": {"S": "p4"}, "name": {"S": "Torta de chocolate"}, "price": {"N": "18000"}, "image_url": {"S": ""}}}}
+  ]
+}
