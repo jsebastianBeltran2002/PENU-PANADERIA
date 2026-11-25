@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <a class="saltar" href="#catalogo">Saltar al catálogo</a>
   <header class="hero">
     <nav class="topbar">
       <span class="marca-icono" aria-hidden="true">🥐</span>
@@ -23,10 +24,16 @@
   <main class="layout">
     <section class="panel" aria-labelledby="titulo-catalogo">
       <h2 id="titulo-catalogo">Nuestro catálogo</h2>
-      <div id="catalogo">Cargando catálogo...</div>
+      <div id="catalogo" aria-busy="true">
+        <span class="sr-only">Cargando catálogo...</span>
+        <div class="card skeleton" aria-hidden="true"><div class="card-foto"></div><div class="card-cuerpo"><span class="sk-linea"></span><span class="sk-linea corta"></span><span class="sk-boton"></span></div></div>
+        <div class="card skeleton" aria-hidden="true"><div class="card-foto"></div><div class="card-cuerpo"><span class="sk-linea"></span><span class="sk-linea corta"></span><span class="sk-boton"></span></div></div>
+        <div class="card skeleton" aria-hidden="true"><div class="card-foto"></div><div class="card-cuerpo"><span class="sk-linea"></span><span class="sk-linea corta"></span><span class="sk-boton"></span></div></div>
+        <div class="card skeleton" aria-hidden="true"><div class="card-foto"></div><div class="card-cuerpo"><span class="sk-linea"></span><span class="sk-linea corta"></span><span class="sk-boton"></span></div></div>
+      </div>
     </section>
 
-    <aside class="panel pedido" aria-labelledby="titulo-pedido">
+    <aside class="panel pedido" id="pedido" aria-labelledby="titulo-pedido">
       <h2 id="titulo-pedido">Tu pedido</h2>
 
       <ul id="resumen" class="resumen" aria-live="polite"></ul>
@@ -50,6 +57,11 @@
       <div id="msg" role="status" aria-live="polite"></div>
     </aside>
   </main>
+
+  <div class="barra-movil" id="barra-movil" hidden>
+    <div><span id="barra-cant">0 productos</span><strong id="barra-total">$0</strong></div>
+    <a class="boton" href="#pedido">Ver pedido</a>
+  </div>
 
   <footer class="pie">Pan de la Casa · Pedidos web para recoger en tienda</footer>
 

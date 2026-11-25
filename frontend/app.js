@@ -66,7 +66,14 @@ async function cargar() {
       ? productos.map(tarjeta).join("")
       : `<p class="vacio">Por ahora no hay productos disponibles.</p>`;
   } catch (e) {
-    catalogo.innerHTML = `<p class="vacio">No se pudo cargar el catálogo. Intenta de nuevo en un momento.</p>`;
+    catalogo.innerHTML = `
+      <div class="vacio">
+        <p>No se pudo cargar el catálogo. Revisa tu conexión e intenta de nuevo.</p>
+        <button type="button" class="boton boton-sec" id="reintentar">Reintentar</button>
+      </div>`;
+    document.getElementById("reintentar").onclick = () => location.reload();
+  } finally {
+    catalogo.removeAttribute("aria-busy");
   }
 }
 
@@ -93,6 +100,12 @@ function actualizarResumen() {
   resumenVacio.hidden = lista.length > 0;
   const total = lista.reduce((s, p) => s + p.qty * Number(p.price), 0);
   totalEl.textContent = precio(total);
+
+  // Barra inferior en movil
+  const unidades = lista.reduce((s, p) => s + p.qty, 0);
+  document.getElementById("barra-movil").hidden = unidades === 0;
+  document.getElementById("barra-cant").textContent = unidades + (unidades === 1 ? " producto" : " productos");
+  document.getElementById("barra-total").textContent = precio(total);
 }
 
 // ---- Validacion y envio ----
