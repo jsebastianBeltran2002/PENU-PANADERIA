@@ -73,11 +73,65 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.15; margin: 0; }
 
 .pedido { position: sticky; top: 1rem; }
 
-/* Catalogo (se reemplaza por tarjetas en la parte 2) */
-.prod { display: flex; justify-content: space-between; align-items: center; padding: .75rem 0; border-bottom: 1px solid var(--crema-2); }
-.prod:last-child { border-bottom: 0; }
-.prod img { width: 64px; height: 64px; object-fit: cover; border-radius: 10px; margin-right: 1rem; background: var(--crema-2); }
-.prod .info { flex: 1; display: flex; align-items: center; }
+/* Catalogo en tarjetas */
+#catalogo {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1rem;
+}
+.card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  background: var(--blanco);
+  overflow: hidden;
+  transition: transform .15s, box-shadow .15s, border-color .15s;
+}
+.card:hover { transform: translateY(-2px); box-shadow: var(--sombra); }
+.card.elegido { border-color: var(--horno); box-shadow: 0 0 0 2px rgba(181, 86, 43, .25); }
+
+.card-foto {
+  aspect-ratio: 4 / 3;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(160deg, var(--crema-2), #ead6b8);
+}
+.card-foto img { width: 100%; height: 100%; object-fit: cover; }
+.foto-emoji { font-size: 3.5rem; filter: drop-shadow(0 4px 6px rgba(59, 42, 26, .15)); }
+
+.card-cuerpo { padding: .9rem 1rem 1rem; display: flex; flex-direction: column; gap: .25rem; flex: 1; }
+.card h3 { font-size: 1.1rem; }
+.card-precio { margin: 0 0 .6rem; color: var(--horno-oscuro); font-weight: 700; }
+
+.stepper {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--crema);
+  border: 1px solid var(--borde);
+  border-radius: 999px;
+  padding: .2rem;
+}
+.stepper button {
+  width: 2.1rem;
+  height: 2.1rem;
+  border: 0;
+  border-radius: 50%;
+  background: var(--blanco);
+  color: var(--horno-oscuro);
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(59, 42, 26, .12);
+}
+.stepper button:hover { background: var(--horno); color: var(--blanco); }
+.stepper button:focus-visible { outline: 2px solid var(--horno); outline-offset: 2px; }
+.stepper output { min-width: 2ch; text-align: center; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+.vacio { grid-column: 1 / -1; color: var(--cafe-suave); margin: 0; }
 
 /* Formulario */
 .campo { display: flex; flex-direction: column; gap: .35rem; margin-bottom: 1rem; font-weight: 600; font-size: .95rem; }
@@ -91,7 +145,6 @@ input {
   background: var(--crema);
 }
 input:focus { outline: 2px solid var(--horno); outline-offset: 1px; border-color: transparent; }
-input[type=number] { width: 4.5rem; text-align: center; }
 
 .boton {
   width: 100%;
