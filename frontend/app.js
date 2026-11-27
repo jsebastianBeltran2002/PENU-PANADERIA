@@ -147,23 +147,57 @@ function marcarError(input, texto) {
   document.getElementById("error-" + input.id).textContent = texto || "";
 }
 
-function validar() {
-  let ok = true;
-  if (!nombre.value.trim()) { marcarError(nombre, "Escribe tu nombre."); ok = false; }
-  else marcarError(nombre, "");
-  if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(hora.value)) { marcarError(hora, "Elige una hora de recogida."); ok = false; }
-  else marcarError(hora, "");
-  if (!elegidos().length) { mostrarMsg("error", "Agrega al menos un producto a tu pedido."); ok = false; }
-  return ok;
+// Horario de recogida: de 06:00 a 20:00
+const HORA_MIN = "06:00";
+const HORA_MAX = "20:00";
+
+function errorNombre() {
+  return nombre.value.trim() ? "" : "Toda historia necesita un protagonista: escribe tu nombre.";
 }
+
+function errorHora() {
+  if (!hora.value) return "¿A qué hora pasas? Elige una hora de recogida.";
+  if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(hora.value)) return "Escribe la hora en formato HH:MM.";
+  if (hora.value < HORA_MIN || hora.value > HORA_MAX) {
+    return "A esa hora el horno duerme. Elige una hora entre las 6:00 a. m. y las 8:00 p. m.";
+  }
+  return "";
+}
+
+function validar() {
+  const en = errorNombre();
+  const eh = errorHora();
+  marcarError(nombre, en);
+  marcarError(hora, eh);
+  if (en) nombre.focus();
+  else if (eh) hora.focus();
+  if (!elegidos().length) {
+    mostrarMsg("error", "Tu pedido está vacío: agrega al menos un capítulo de la carta.");
+    return false;
+  }
+  return !en && !eh;
+}
+
+// Recordar el nombre del cliente en este navegador
+const CLAVE_NOMBRE = "uc_nombre";
+function recordarNombre(valor) {
+  try { localStorage.setItem(CLAVE_NOMBRE, valor); } catch (e) { /* modo privado */ }
+}
+function nombreRecordado() {
+  try { return localStorage.getItem(CLAVE_NOMBRE) || ""; } catch (e) { return ""; }
+}
+nombre.value = nombreRecordado();
 
 function mostrarMsg(tipo, html) {
   msg.className = "msg msg-" + tipo;
   msg.innerHTML = html;
 }
 
-nombre.addEventListener("input", () => nombre.value.trim() && marcarError(nombre, ""));
-hora.addEventListener("input", () => hora.value && marcarError(hora, ""));
+// Al corregir, el error desaparece; al salir del campo, se revisa de nuevo
+nombre.addEventListener("input", () => { if (!errorNombre()) marcarError(nombre, ""); });
+hora.addEventListener("input", () => { if (!errorHora()) marcarError(hora, ""); });
+nombre.addEventListener("blur", () => nombre.value && marcarError(nombre, errorNombre()));
+hora.addEventListener("blur", () => hora.value && marcarError(hora, errorHora()));
 
 form.addEventListener("submit", async e => {
   e.preventDefault();
@@ -187,9 +221,10 @@ form.addEventListener("submit", async e => {
       <strong>¡Pedido recibido, ${esc(data.customer_name)}!</strong>
       Te esperamos a las ${esc(data.pickup_time)}.
       <span class="codigo">Código: ${esc(String(data.order_id).slice(0, 8).toUpperCase())}</span>`);
-    // Reiniciar el pedido
+    recordarNombre(body.customer_name);
+    // Reiniciar el pedido (el nombre se conserva)
     Object.keys(cantidades).forEach(id => cantidades[id] > 0 && cambiarCantidad(id, -cantidades[id]));
-    form.reset();
+    hora.value = "";
   } catch (err) {
     mostrarMsg("error", "No pudimos registrar tu pedido: " + esc(err.message));
   } finally {

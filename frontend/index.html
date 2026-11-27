@@ -110,14 +110,18 @@
       </div>
 
       <form id="form-pedido" novalidate>
-        <label class="campo">Nombre
-          <input id="nombre" autocomplete="name" placeholder="¿A nombre de quién?" required>
-          <small class="error-campo" id="error-nombre"></small>
-        </label>
-        <label class="campo">Hora de recogida
-          <input id="hora" type="time" required>
-          <small class="error-campo" id="error-hora"></small>
-        </label>
+        <label class="campo" for="nombre">Nombre</label>
+        <input id="nombre" name="nombre" autocomplete="name" maxlength="60"
+               placeholder="¿Quién protagoniza este capítulo?" required
+               aria-describedby="error-nombre">
+        <small class="error-campo" id="error-nombre"></small>
+
+        <label class="campo" for="hora">Hora de recogida</label>
+        <input id="hora" name="hora" type="time" min="06:00" max="20:00" required
+               aria-describedby="ayuda-hora error-hora">
+        <small class="ayuda-campo" id="ayuda-hora">Horneamos de 6:00 a. m. a 8:00 p. m.</small>
+        <small class="error-campo" id="error-hora"></small>
+
         <button id="enviar" class="boton" type="submit">Hacer pedido</button>
       </form>
       <div id="msg" role="status" aria-live="polite"></div>

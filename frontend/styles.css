@@ -226,7 +226,13 @@ h1, h2, h3 { font-family: var(--titulos); font-weight: 600; line-height: 1.1; ma
 .vacio { grid-column: 1 / -1; color: var(--tinta-suave); margin: 0; }
 
 /* ---------- Formulario ---------- */
-.campo { display: flex; flex-direction: column; gap: .35rem; margin-bottom: 1rem; font-weight: 600; font-size: .95rem; }
+#form-pedido { display: flex; flex-direction: column; }
+.campo { margin: 0 0 .35rem; font-weight: 600; font-size: .95rem; }
+#form-pedido input { margin-bottom: .35rem; }
+#form-pedido small { margin-bottom: .35rem; }
+#form-pedido .boton { margin-top: 1rem; }
+.ayuda-campo { color: var(--tinta-suave); font-size: .82rem; font-style: italic; }
+#form-pedido .campo[for="hora"] { margin-top: .75rem; }
 input {
   font: inherit;
   font-weight: 400;
@@ -310,6 +316,7 @@ a.boton { width: auto; }
 /* ---------- Validacion y mensajes ---------- */
 input.invalido { border-color: var(--error); background: #fbefea; }
 .error-campo { color: var(--error); font-weight: 500; font-size: .85rem; }
+.error-campo::before { content: "✎ "; }
 .error-campo:empty { display: none; }
 
 .msg { margin-top: 1rem; padding: .85rem 1rem; border-radius: var(--radio); font-size: .95rem; }
