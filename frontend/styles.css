@@ -402,7 +402,34 @@ input.invalido { border-color: var(--error); background: #fbefea; }
 .pagina .boton { width: auto; }
 .pagina-folio { margin: 1.25rem 0 0; font-family: var(--titulos); font-style: italic; color: var(--tinta-suave); }
 
-.pie { text-align: center; color: var(--tinta-suave); font-size: .9rem; padding: 0 1rem 2rem; }
+/* ---------- Pie de pagina ---------- */
+.pie {
+  margin-top: 3rem;
+  padding: 3rem 1.25rem 1.5rem;
+  background: var(--tinta);
+  color: var(--pergamino);
+  border-top: 3px double var(--dorado);
+  font-size: .95rem;
+}
+.pie-contenido {
+  max-width: 1120px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 1fr 1fr;
+  gap: 2rem;
+}
+.pie .etiqueta { color: var(--dorado); font-size: .75rem; margin-bottom: .6rem; }
+.pie p, .pie address { margin: 0 0 .4rem; }
+.pie address { font-style: normal; }
+.pie-marca { display: flex; flex-direction: column; align-items: flex-start; gap: .75rem; }
+.pie-sello { width: 96px; height: 96px; }
+.pie-eslogan { font-family: var(--titulos); font-style: italic; font-size: 1.35rem; color: var(--crema); }
+.pie-nota { font-style: italic; color: #cbb89f; font-size: .88rem; }
+.pie-enlace { color: var(--crema); text-decoration-color: var(--dorado); text-underline-offset: 3px; }
+.pie-enlace:hover { color: var(--dorado); }
+.pie-enlace:focus-visible { outline: 2px solid var(--dorado); outline-offset: 3px; }
+.pie .divisor { margin: 2rem auto 1rem; }
+.pie-legal { text-align: center; font-size: .8rem; color: #b5a48e; }
 
 /* ---------- Accesibilidad ---------- */
 .sr-only {
@@ -457,7 +484,8 @@ input.invalido { border-color: var(--error); background: #fbefea; }
 .barra-movil { display: none; }
 
 @media (max-width: 820px) {
-  .layout { grid-template-columns: 1fr; margin-bottom: 6rem; }
+  .layout { grid-template-columns: 1fr; }
+  .pie { padding-bottom: 6rem; }
   .pedido { position: relative; top: 0; scroll-margin-top: 1rem; }
   .barra-movil:not([hidden]) {
     display: flex;
@@ -475,11 +503,13 @@ input.invalido { border-color: var(--error); background: #fbefea; }
 }
 
 @media (max-width: 900px) {
+  .pie-contenido { grid-template-columns: 1fr 1fr; }
   .historia-grid { grid-template-columns: 1fr; }
   .diario { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 480px) {
+  .pie-contenido { grid-template-columns: 1fr; gap: 1.5rem; }
   .portada { padding: 1.25rem .75rem 2.5rem; }
   .portada-marco { padding: 2rem 1rem 2.25rem; }
   .panel { padding: 1.5rem 1.1rem; }
