@@ -82,6 +82,30 @@ h1, h2, h3 { font-family: var(--titulos); font-weight: 600; line-height: 1.1; ma
   background-repeat: no-repeat;
 }
 
+/* Epigrafes al inicio de cada seccion */
+.epigrafe {
+  margin: 0 0 1.5rem;
+  padding: 0 0 1rem;
+  max-width: 34rem;
+  border-bottom: 1px solid var(--filete);
+}
+.epigrafe p {
+  margin: 0;
+  font-family: var(--titulos);
+  font-style: italic;
+  font-size: 1.25rem;
+  line-height: 1.35;
+  color: var(--cuero);
+}
+.epigrafe footer {
+  margin-top: .35rem;
+  font-family: var(--titulos);
+  font-size: .78rem;
+  text-transform: uppercase;
+  letter-spacing: .22em;
+  color: var(--tinta-suave);
+}
+
 /* Divisor con espiga */
 .divisor { display: flex; align-items: center; gap: .9rem; color: var(--dorado); margin: 1.5rem auto; max-width: 280px; }
 .divisor span { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--dorado), transparent); }
