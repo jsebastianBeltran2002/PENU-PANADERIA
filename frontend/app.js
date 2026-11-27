@@ -10,38 +10,55 @@ const esc = s => String(s ?? "").replace(/[&<>"']/g, c =>
 
 const precio = n => "$" + Number(n).toLocaleString("es-CO");
 
-// Emoji de respaldo cuando el producto no tiene foto
-function emojiDe(nombre) {
-  const n = nombre.toLowerCase();
-  if (n.includes("croissant")) return "🥐";
-  if (n.includes("bono") || n.includes("queso")) return "🧀";
-  if (n.includes("frances") || n.includes("baguette")) return "🥖";
-  if (n.includes("torta") || n.includes("pastel")) return "🍰";
-  if (n.includes("galleta")) return "🍪";
-  if (n.includes("dona")) return "🍩";
-  return "🍞";
+// Nombres de la carta (solo en pantalla). La API sigue usando product_id y name.
+const CARTA = {
+  p1: { orden: 1, num: "I", etiqueta: "Capítulo I", titulo: "El Despertar",
+        frase: "Hojaldre dorado que cruje como la primera página de la mañana." },
+  p2: { orden: 2, num: "II", etiqueta: "Capítulo II", titulo: "La Posada del Viajero",
+        frase: "Redondo, tibio y con queso: el refugio de quien llega de lejos." },
+  p3: { orden: 3, num: "III", etiqueta: "Capítulo III", titulo: "El Pan del Cartógrafo",
+        frase: "Corteza firme para trazar el camino del día." },
+  p4: { orden: 4, num: "Ep.", etiqueta: "Epílogo", titulo: "El Gran Final",
+        frase: "Chocolate profundo para cerrar la historia como se merece." }
+};
+
+// Datos de pantalla de un producto; si no tiene mapeo, se usa su nombre normal
+function ficha(p) {
+  const c = CARTA[p.product_id];
+  return c
+    ? { ...c, completo: `${c.etiqueta} · ${c.titulo}`, real: p.name }
+    : { orden: 100, num: "", etiqueta: "", titulo: p.name, frase: "", completo: p.name, real: "" };
+}
+
+function ordenCarta(a, b) {
+  return ficha(a).orden - ficha(b).orden || String(a.name).localeCompare(b.name, "es");
 }
 
 function tarjeta(p) {
   const id = esc(p.product_id);
-  const nombre = esc(p.name);
+  const f = ficha(p);
   const foto = p.image_url
-    ? `<img src="${esc(p.image_url)}" alt="${nombre}" loading="lazy"
-         onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'foto-emoji',textContent:'${emojiDe(p.name)}'}))">`
-    : `<span class="foto-emoji" aria-hidden="true">${emojiDe(p.name)}</span>`;
+    ? `<img class="cap-img" src="${esc(p.image_url)}" alt="" loading="lazy" onerror="this.remove()">`
+    : "";
   return `
-    <article class="card" data-card="${id}">
-      <div class="card-foto">${foto}</div>
-      <div class="card-cuerpo">
-        <h3>${nombre}</h3>
-        <p class="card-precio">${precio(p.price)}</p>
-        <div class="stepper" role="group" aria-label="Cantidad de ${nombre}">
-          <button type="button" data-accion="menos" data-id="${id}" aria-label="Quitar uno">−</button>
-          <output data-cant="${id}">0</output>
-          <button type="button" data-accion="mas" data-id="${id}" aria-label="Agregar uno">+</button>
-        </div>
+    <li class="capitulo" data-card="${id}">
+      <span class="cap-num" aria-hidden="true">${esc(f.num) || "❧"}</span>
+      <div class="cap-texto">
+        ${f.etiqueta ? `<span class="etiqueta">${esc(f.etiqueta)}</span>` : ""}
+        <h3 class="cap-linea">
+          <span class="cap-titulo">${esc(f.titulo)}</span>
+          <span class="relleno" aria-hidden="true"></span>
+          <span class="cap-precio">${precio(p.price)}</span>
+        </h3>
+        ${f.real ? `<p class="cap-real">${esc(f.real)}${f.frase ? ` · <em>${esc(f.frase)}</em>` : ""}</p>` : ""}
       </div>
-    </article>`;
+      ${foto}
+      <div class="stepper" role="group" aria-label="Cantidad de ${esc(f.completo)}">
+        <button type="button" data-accion="menos" data-id="${id}" aria-label="Quitar uno de ${esc(f.titulo)}">−</button>
+        <output data-cant="${id}">0</output>
+        <button type="button" data-accion="mas" data-id="${id}" aria-label="Agregar uno de ${esc(f.titulo)}">+</button>
+      </div>
+    </li>`;
 }
 
 function cambiarCantidad(id, delta) {
@@ -61,9 +78,9 @@ async function cargar() {
   try {
     const r = await fetch(API + "/products");
     if (!r.ok) throw new Error(r.status);
-    productos = await r.json();
+    productos = (await r.json()).sort(ordenCarta);
     catalogo.innerHTML = productos.length
-      ? productos.map(tarjeta).join("")
+      ? `<ol class="indice">${productos.map(tarjeta).join("")}</ol>`
       : `<p class="vacio">Por ahora no hay productos disponibles.</p>`;
   } catch (e) {
     catalogo.innerHTML = `

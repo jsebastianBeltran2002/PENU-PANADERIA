@@ -152,35 +152,57 @@ h1, h2, h3 { font-family: var(--titulos); font-weight: 600; line-height: 1.1; ma
 
 .pedido { position: sticky; top: 1rem; }
 
-/* ---------- Carta (tarjetas) ---------- */
-#catalogo {
+/* ---------- Carta como indice de libro ---------- */
+.indice { list-style: none; margin: 0; padding: 0; }
+.capitulo {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-template-columns: 3.2rem 1fr auto auto;
+  align-items: center;
   gap: 1rem;
+  padding: 1.1rem .5rem;
+  border-bottom: 1px solid var(--filete);
+  transition: background .2s;
 }
-.card {
+.capitulo:last-child { border-bottom: 0; }
+.capitulo.elegido { background: rgba(184, 137, 59, .09); }
+.cap-num {
+  width: 3rem;
+  height: 3rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--dorado);
+  border-radius: 50%;
+  font-family: var(--titulos);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--cuero);
+  background: var(--pergamino);
+  box-shadow: inset 0 0 0 3px var(--crema);
+}
+.capitulo.elegido .cap-num { background: var(--cuero); color: var(--crema); }
+.cap-texto { min-width: 0; }
+.cap-linea {
   display: flex;
-  flex-direction: column;
-  border: 1px solid var(--filete);
-  border-radius: var(--radio);
-  background: var(--crema);
-  overflow: hidden;
-  transition: transform .2s, box-shadow .2s, border-color .2s;
+  align-items: baseline;
+  gap: .5rem;
+  margin-top: .15rem;
+  font-size: 1.45rem;
 }
-.card:hover { transform: translateY(-2px); box-shadow: var(--sombra); }
-.card.elegido { border-color: var(--dorado); box-shadow: 0 0 0 2px rgba(184, 137, 59, .3); }
-
-.card-foto { aspect-ratio: 4 / 3; display: grid; place-items: center; background: var(--pergamino); }
-.card-foto img { width: 100%; height: 100%; object-fit: cover; }
-.foto-emoji { font-size: 3.2rem; }
-
-.card-cuerpo { padding: .9rem 1rem 1rem; display: flex; flex-direction: column; gap: .25rem; flex: 1; }
-.card h3 { font-size: 1.3rem; }
-.card-precio { margin: 0 0 .6rem; color: var(--cuero); font-weight: 600; }
+.cap-titulo { font-weight: 600; }
+.relleno {
+  flex: 1;
+  min-width: 1.5rem;
+  border-bottom: 2px dotted var(--dorado);
+  transform: translateY(-.28em);
+}
+.cap-precio { font-family: var(--texto); font-size: 1rem; font-weight: 600; color: var(--cuero); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.cap-real { margin: .2rem 0 0; font-size: .88rem; color: var(--tinta-suave); }
+.cap-real em { font-style: italic; }
+.cap-img { width: 56px; height: 56px; object-fit: cover; border-radius: 50%; border: 1px solid var(--filete); }
 
 .stepper {
-  margin-top: auto;
   display: flex;
+  gap: .35rem;
   align-items: center;
   justify-content: space-between;
   border: 1px solid var(--filete);
@@ -330,9 +352,11 @@ input.invalido { border-color: var(--error); background: #fbefea; }
   .portada { padding: 1.25rem .75rem 2.5rem; }
   .portada-marco { padding: 2rem 1rem 2.25rem; }
   .panel { padding: 1.5rem 1.1rem; }
-  #catalogo { grid-template-columns: repeat(2, 1fr); gap: .75rem; }
-  .card-cuerpo { padding: .7rem; }
-  .card h3 { font-size: 1.1rem; }
+  .capitulo { grid-template-columns: 2.6rem 1fr; gap: .4rem .8rem; padding: 1rem 0; }
+  .cap-num { width: 2.5rem; height: 2.5rem; font-size: 1.05rem; }
+  .cap-linea { font-size: 1.2rem; }
+  .cap-img { display: none; }
+  .capitulo .stepper { grid-column: 2; justify-self: start; }
 }
 
 @media (prefers-reduced-motion: reduce) {
