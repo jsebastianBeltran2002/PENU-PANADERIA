@@ -64,8 +64,10 @@ function tarjeta(p) {
 function cambiarCantidad(id, delta) {
   const nueva = Math.max(0, Math.min(99, (cantidades[id] || 0) + delta));
   cantidades[id] = nueva;
-  document.querySelector(`[data-cant="${CSS.escape(id)}"]`).textContent = nueva;
-  document.querySelector(`[data-card="${CSS.escape(id)}"]`).classList.toggle("elegido", nueva > 0);
+  const cant = document.querySelector(`[data-cant="${CSS.escape(id)}"]`);
+  const fila = document.querySelector(`[data-card="${CSS.escape(id)}"]`);
+  if (cant) cant.textContent = nueva;
+  if (fila) fila.classList.toggle("elegido", nueva > 0);
   actualizarResumen();
 }
 
@@ -74,21 +76,40 @@ catalogo.addEventListener("click", e => {
   if (b) cambiarCantidad(b.dataset.id, b.dataset.accion === "mas" ? 1 : -1);
 });
 
+// Esqueleto de carga con la forma del indice
+const ESQUELETO = `<ol class="indice" aria-hidden="true">${`
+  <li class="capitulo skeleton">
+    <span class="cap-num"></span>
+    <div class="cap-texto"><span class="sk-linea corta"></span><span class="sk-linea"></span><span class="sk-linea larga"></span></div>
+    <span class="sk-boton"></span>
+  </li>`.repeat(4)}</ol>`;
+
 async function cargar() {
+  catalogo.setAttribute("aria-busy", "true");
+  catalogo.innerHTML = `<p class="sr-only">Buscando la carta en la biblioteca...</p>${ESQUELETO}`;
   try {
     const r = await fetch(API + "/products");
     if (!r.ok) throw new Error(r.status);
     productos = (await r.json()).sort(ordenCarta);
     catalogo.innerHTML = productos.length
       ? `<ol class="indice">${productos.map(tarjeta).join("")}</ol>`
-      : `<p class="vacio">Por ahora no hay productos disponibles.</p>`;
+      : `<div class="aviso"><p class="aviso-titulo">Página en blanco</p>
+           <p>Hoy el horno aún no ha escrito nada. Vuelve en un rato.</p></div>`;
+    // Restaurar cantidades si se reintento con un pedido en curso
+    Object.keys(cantidades).forEach(id => cantidades[id] > 0 && cambiarCantidad(id, 0));
   } catch (e) {
     catalogo.innerHTML = `
-      <div class="vacio">
-        <p>No se pudo cargar el catálogo. Revisa tu conexión e intenta de nuevo.</p>
+      <div class="aviso" role="alert">
+        <svg class="aviso-vela" viewBox="0 0 40 64" aria-hidden="true">
+          <path d="M20 4 C26 13 25 19 20 22 C15 19 14 13 20 4 Z" fill="var(--dorado)"/>
+          <rect x="13" y="24" width="14" height="30" rx="2" fill="var(--pergamino)" stroke="var(--cuero)"/>
+          <path d="M6 56 H34 L30 62 H10 Z" fill="var(--cuero)"/>
+        </svg>
+        <p class="aviso-titulo">Se nos apagó la vela</p>
+        <p>No pudimos traer la carta desde la biblioteca. Revisa tu conexión y probemos otra vez.</p>
         <button type="button" class="boton boton-sec" id="reintentar">Reintentar</button>
       </div>`;
-    document.getElementById("reintentar").onclick = () => location.reload();
+    document.getElementById("reintentar").onclick = cargar;
   } finally {
     catalogo.removeAttribute("aria-busy");
   }
@@ -212,7 +233,8 @@ form.addEventListener("submit", async e => {
   };
 
   boton.disabled = true;
-  boton.textContent = "Enviando...";
+  boton.setAttribute("aria-busy", "true");
+  boton.innerHTML = `<span class="girando" aria-hidden="true"></span> Horneando tu pedido...`;
   try {
     const r = await fetch(API + "/orders", { method: "POST", body: JSON.stringify(body) });
     const data = await r.json().catch(() => ({}));
@@ -223,9 +245,11 @@ form.addEventListener("submit", async e => {
     Object.keys(cantidades).forEach(id => cantidades[id] > 0 && cambiarCantidad(id, -cantidades[id]));
     hora.value = "";
   } catch (err) {
-    mostrarMsg("error", "No pudimos registrar tu pedido: " + esc(err.message));
+    mostrarMsg("error", `<strong>El horno tuvo un tropiezo.</strong>
+      No pudimos guardar tu pedido (${esc(err.message)}). Tu selección sigue aquí: inténtalo de nuevo.`);
   } finally {
     boton.disabled = false;
+    boton.removeAttribute("aria-busy");
     boton.textContent = "Hacer pedido";
   }
 });

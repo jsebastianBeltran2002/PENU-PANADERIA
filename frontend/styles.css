@@ -223,7 +223,6 @@ h1, h2, h3 { font-family: var(--titulos); font-weight: 600; line-height: 1.1; ma
 .stepper button:hover { background: var(--cuero); color: var(--crema); }
 .stepper output { min-width: 2ch; text-align: center; font-weight: 600; font-variant-numeric: tabular-nums; }
 
-.vacio { grid-column: 1 / -1; color: var(--tinta-suave); margin: 0; }
 
 /* ---------- Formulario ---------- */
 #form-pedido { display: flex; flex-direction: column; }
@@ -323,7 +322,6 @@ input.invalido { border-color: var(--error); background: #fbefea; }
 .msg-exito { background: #eef1ea; color: var(--verde); border: 1px solid #c5cdbd; }
 .msg-error { background: #fbefea; color: var(--error); border: 1px solid #ebc8bd; }
 .msg strong { display: block; margin-bottom: .15rem; }
-.codigo { display: inline-block; margin-top: .4rem; padding: .15rem .5rem; background: var(--crema); font-weight: 600; letter-spacing: .12em; }
 
 /* ---------- Confirmacion: pagina de libro ---------- */
 .pagina {
@@ -381,19 +379,42 @@ input.invalido { border-color: var(--error); background: #fbefea; }
 }
 .saltar:focus { top: 1rem; }
 
-/* ---------- Esqueletos de carga ---------- */
+/* ---------- Estados: carga, error y envio ---------- */
 .skeleton { pointer-events: none; }
-.skeleton .card-foto,
+.skeleton .cap-num,
 .sk-linea,
 .sk-boton {
-  background: linear-gradient(90deg, var(--pergamino) 25%, #faf1e4 50%, var(--pergamino) 75%);
+  border-color: transparent;
+  box-shadow: none;
+  background: linear-gradient(90deg, var(--pergamino) 25%, #fbf3e6 50%, var(--pergamino) 75%);
   background-size: 200% 100%;
   animation: brillo 1.4s ease-in-out infinite;
 }
-.sk-linea { display: block; height: .9rem; border-radius: 3px; width: 75%; }
-.sk-linea.corta { width: 40%; margin-bottom: .6rem; }
-.sk-boton { display: block; height: 2.6rem; border-radius: 999px; margin-top: auto; }
+.sk-linea { display: block; height: .85rem; border-radius: 3px; width: 55%; margin: .45rem 0; }
+.sk-linea.corta { width: 22%; height: .6rem; }
+.sk-linea.larga { width: 85%; height: .7rem; }
+.sk-boton { display: block; width: 7.5rem; height: 2.6rem; border-radius: 999px; }
 @keyframes brillo { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+
+.aviso { text-align: center; padding: 1.5rem 1rem; color: var(--tinta-suave); }
+.aviso p { margin: .25rem 0; }
+.aviso-titulo { font-family: var(--titulos); font-size: 1.6rem; font-weight: 600; color: var(--tinta); }
+.aviso-vela { width: 40px; height: 64px; margin-bottom: .5rem; }
+.aviso-vela path:first-child { transform-origin: 20px 22px; animation: llama 1.8s ease-in-out infinite; opacity: .55; }
+@keyframes llama { 50% { transform: scale(.85, 1.08) rotate(-3deg); } }
+
+.girando {
+  display: inline-block;
+  width: .9em;
+  height: .9em;
+  margin-right: .35rem;
+  vertical-align: -.1em;
+  border: 2px solid rgba(251, 246, 238, .35);
+  border-top-color: var(--dorado);
+  border-radius: 50%;
+  animation: girar .8s linear infinite;
+}
+@keyframes girar { to { transform: rotate(360deg); } }
 
 /* ---------- Barra inferior (solo movil) ---------- */
 .barra-movil { display: none; }
