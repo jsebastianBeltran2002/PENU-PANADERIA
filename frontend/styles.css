@@ -325,6 +325,48 @@ input.invalido { border-color: var(--error); background: #fbefea; }
 .msg strong { display: block; margin-bottom: .15rem; }
 .codigo { display: inline-block; margin-top: .4rem; padding: .15rem .5rem; background: var(--crema); font-weight: 600; letter-spacing: .12em; }
 
+/* ---------- Confirmacion: pagina de libro ---------- */
+.pagina {
+  width: min(560px, calc(100% - 1.5rem));
+  max-height: calc(100% - 1.5rem);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--tinta);
+  overflow: visible;
+}
+.pagina::backdrop { background: rgba(43, 27, 18, .55); backdrop-filter: blur(2px); }
+.pagina-hoja {
+  max-height: calc(100vh - 1.5rem);
+  overflow-y: auto;
+  padding: 2.5rem 2.25rem 1.75rem;
+  text-align: center;
+  background: var(--papel), var(--crema);
+  border: 1px solid var(--dorado);
+  border-radius: 2px 8px 8px 2px;
+  box-shadow:
+    inset 18px 0 24px -18px rgba(43, 27, 18, .35),
+    0 30px 60px rgba(43, 27, 18, .35);
+}
+.pagina h2 { font-size: clamp(1.9rem, 5vw, 2.5rem); margin-top: .35rem; }
+.pagina-carta { font-size: 1.02rem; margin: 1rem 0 0; text-align: left; }
+.pagina-carta::first-letter {
+  float: left;
+  font-family: var(--titulos);
+  font-size: 3.4rem;
+  line-height: .85;
+  padding: .3rem .4rem 0 0;
+  color: var(--roble);
+}
+.pagina .divisor { margin: 1.25rem auto; }
+.pagina-datos { display: flex; justify-content: center; gap: 2.5rem; margin: 0 0 1rem; }
+.pagina-datos dd { margin: .2rem 0 0; font-family: var(--titulos); font-size: 1.6rem; font-weight: 700; color: var(--cuero); letter-spacing: .06em; font-variant-numeric: lining-nums tabular-nums; }
+.pagina-resumen { text-align: left; }
+.pagina-resumen li { grid-template-columns: auto 1fr auto; }
+.pagina-nota { font-style: italic; color: var(--tinta-suave); font-size: .9rem; margin: 0 0 1.25rem; }
+.pagina .boton { width: auto; }
+.pagina-folio { margin: 1.25rem 0 0; font-family: var(--titulos); font-style: italic; color: var(--tinta-suave); }
+
 .pie { text-align: center; color: var(--tinta-suave); font-size: .9rem; padding: 0 1rem 2rem; }
 
 /* ---------- Accesibilidad ---------- */

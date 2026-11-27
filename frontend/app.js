@@ -217,11 +217,8 @@ form.addEventListener("submit", async e => {
     const r = await fetch(API + "/orders", { method: "POST", body: JSON.stringify(body) });
     const data = await r.json().catch(() => ({}));
     if (!r.ok) throw new Error(data.error || "Error " + r.status);
-    mostrarMsg("exito", `
-      <strong>¡Pedido recibido, ${esc(data.customer_name)}!</strong>
-      Te esperamos a las ${esc(data.pickup_time)}.
-      <span class="codigo">Código: ${esc(String(data.order_id).slice(0, 8).toUpperCase())}</span>`);
     recordarNombre(body.customer_name);
+    mostrarConfirmacion(data, body, elegidos());
     // Reiniciar el pedido (el nombre se conserva)
     Object.keys(cantidades).forEach(id => cantidades[id] > 0 && cambiarCantidad(id, -cantidades[id]));
     hora.value = "";
@@ -231,6 +228,41 @@ form.addEventListener("submit", async e => {
     boton.disabled = false;
     boton.textContent = "Hacer pedido";
   }
+});
+
+// ---- Confirmacion como pagina de libro ----
+const dialogo = document.getElementById("confirmacion");
+
+function horaBonita(hhmm) {
+  const [h, m] = String(hhmm).split(":").map(Number);
+  if (Number.isNaN(h)) return hhmm;
+  const sufijo = h < 12 ? "a. m." : "p. m.";
+  return `${((h + 11) % 12) + 1}:${String(m).padStart(2, "0")} ${sufijo}`;
+}
+
+function mostrarConfirmacion(data, body, lista) {
+  const quien = data.customer_name || body.customer_name;
+  const cuando = data.pickup_time || body.pickup_time;
+  document.getElementById("conf-saludo").innerHTML =
+    `Hoy escribes el capítulo de tu desayuno, <strong>${esc(quien)}</strong>. ` +
+    `Te esperamos a las <strong>${esc(horaBonita(cuando))}</strong> con todo recién salido del horno.`;
+  document.getElementById("conf-codigo").textContent = String(data.order_id || "").slice(0, 8).toUpperCase();
+  document.getElementById("conf-hora").textContent = horaBonita(cuando);
+  document.getElementById("conf-resumen").innerHTML = lista.map(p => `
+    <li>
+      <span class="resumen-cant">${p.qty}×</span>
+      <span class="resumen-nombre">${esc(ficha(p).titulo)}</span>
+      <span class="resumen-sub">${precio(p.qty * Number(p.price))}</span>
+    </li>`).join("");
+  document.getElementById("conf-total").textContent =
+    precio(lista.reduce((s, p) => s + p.qty * Number(p.price), 0));
+  if (typeof dialogo.showModal === "function") dialogo.showModal();
+  else dialogo.setAttribute("open", "");
+}
+
+document.getElementById("otro-capitulo").addEventListener("click", () => {
+  dialogo.close ? dialogo.close() : dialogo.removeAttribute("open");
+  document.getElementById("carta").scrollIntoView();
 });
 
 cargar();

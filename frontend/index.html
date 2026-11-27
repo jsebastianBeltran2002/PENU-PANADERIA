@@ -128,6 +128,25 @@
     </aside>
   </main>
 
+  <!-- Confirmacion del pedido: una pagina del libro -->
+  <dialog id="confirmacion" class="pagina" aria-labelledby="conf-titulo">
+    <div class="pagina-hoja ornado">
+      <p class="etiqueta">Capítulo del día</p>
+      <h2 id="conf-titulo">Tu capítulo está en el horno</h2>
+      <p class="pagina-carta" id="conf-saludo"></p>
+      <div class="divisor" aria-hidden="true"><span></span><svg viewBox="0 0 24 64"><use href="#espiga"/></svg><span></span></div>
+      <dl class="pagina-datos">
+        <div><dt class="etiqueta">Código</dt><dd id="conf-codigo"></dd></div>
+        <div><dt class="etiqueta">Recogida</dt><dd id="conf-hora"></dd></div>
+      </dl>
+      <ul class="resumen pagina-resumen" id="conf-resumen"></ul>
+      <div class="total"><span class="etiqueta">Total</span><strong id="conf-total"></strong></div>
+      <p class="pagina-nota">Muestra el código en el mostrador. Si llegas tarde, guardamos tu pan junto a la chimenea.</p>
+      <button type="button" class="boton" id="otro-capitulo">Escribir otro capítulo</button>
+      <p class="pagina-folio" aria-hidden="true">— fin del capítulo —</p>
+    </div>
+  </dialog>
+
   <div class="barra-movil" id="barra-movil" hidden>
     <div>
       <span class="etiqueta">Tu pedido de hoy</span>
