@@ -51,6 +51,7 @@ h1, h2, h3 { font-family: var(--titulos); font-weight: 600; line-height: 1.1; ma
   font-size: .8rem;
   text-transform: uppercase;
   letter-spacing: .32em;
+  font-variant-numeric: lining-nums;
   color: var(--roble);
   margin: 0;
 }
@@ -342,6 +343,23 @@ input.invalido { border-color: var(--error); background: #fbefea; }
 .mapa svg { display: block; width: 100%; height: auto; filter: drop-shadow(0 8px 18px rgba(43, 27, 18, .18)); }
 .mapa figcaption { margin-top: .6rem; text-align: center; font-family: var(--titulos); font-style: italic; color: var(--tinta-suave); }
 
+/* ---------- Diario del panadero ---------- */
+.diario { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+.entrada {
+  position: relative;
+  padding: 1.5rem 1.4rem 1.25rem;
+  background: #fffdf8;
+  border: 1px solid var(--filete);
+  border-left: 3px double var(--dorado);
+  box-shadow: 0 1px 0 var(--pergamino), 0 3px 0 -1px var(--crema), 0 4px 0 -1px var(--filete);
+  transition: transform .25s, box-shadow .25s;
+}
+.entrada:hover { transform: translateY(-3px) rotate(-.3deg); }
+.entrada-arte { float: right; width: 26px; height: 44px; margin: -.25rem 0 .5rem .75rem; color: var(--dorado); }
+.entrada h3 { font-size: 1.45rem; margin: .4rem 0 .6rem; }
+.entrada p:last-child { margin: 0; font-size: .95rem; }
+.entrada .etiqueta { font-size: .7rem; letter-spacing: .2em; }
+
 /* ---------- Confirmacion: pagina de libro ---------- */
 .pagina {
   width: min(560px, calc(100% - 1.5rem));
@@ -458,6 +476,7 @@ input.invalido { border-color: var(--error); background: #fbefea; }
 
 @media (max-width: 900px) {
   .historia-grid { grid-template-columns: 1fr; }
+  .diario { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 480px) {
