@@ -100,12 +100,12 @@
         <p>«Toda buena historia se escribe con migas en las páginas.»</p>
         <footer>— Dicho de los panaderos del valle</footer>
       </blockquote>
-      <h2 id="titulo-pedido">Tu pedido</h2>
+      <h2 id="titulo-pedido">Tu pedido de hoy</h2>
 
       <ul id="resumen" class="resumen" aria-live="polite"></ul>
-      <p id="resumen-vacio" class="resumen-vacio">Aún no has elegido productos. Usa los botones <strong>+</strong> de la carta.</p>
+      <p id="resumen-vacio" class="resumen-vacio">Tu pedido aún es una página en blanco. Elige un capítulo de la carta con el botón <strong>+</strong>.</p>
       <div class="total">
-        <span>Total</span>
+        <span class="etiqueta">Total</span>
         <strong id="total">$0</strong>
       </div>
 
@@ -125,7 +125,10 @@
   </main>
 
   <div class="barra-movil" id="barra-movil" hidden>
-    <div><span id="barra-cant">0 productos</span><strong id="barra-total">$0</strong></div>
+    <div>
+      <span class="etiqueta">Tu pedido de hoy</span>
+      <span><strong id="barra-total">$0</strong> · <span id="barra-cant">0 piezas</span></span>
+    </div>
     <a class="boton" href="#pedido">Ver pedido</a>
   </div>
 

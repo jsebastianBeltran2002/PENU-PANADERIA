@@ -108,12 +108,17 @@ function elegidos() {
 
 function actualizarResumen() {
   const lista = elegidos();
-  resumen.innerHTML = lista.map(p => `
+  resumen.innerHTML = lista.map(p => {
+    const f = ficha(p);
+    const id = esc(p.product_id);
+    return `
     <li>
       <span class="resumen-cant">${p.qty}×</span>
-      <span class="resumen-nombre">${esc(p.name)}</span>
+      <span class="resumen-nombre">${esc(f.titulo)}${f.etiqueta ? `<small>${esc(f.etiqueta)}</small>` : ""}</span>
       <span class="resumen-sub">${precio(p.qty * Number(p.price))}</span>
-    </li>`).join("");
+      <button type="button" class="quitar" data-quitar="${id}" aria-label="Quitar ${esc(f.titulo)} del pedido" title="Quitar">×</button>
+    </li>`;
+  }).join("");
   resumenVacio.hidden = lista.length > 0;
   const total = lista.reduce((s, p) => s + p.qty * Number(p.price), 0);
   totalEl.textContent = precio(total);
@@ -121,9 +126,14 @@ function actualizarResumen() {
   // Barra inferior en movil
   const unidades = lista.reduce((s, p) => s + p.qty, 0);
   document.getElementById("barra-movil").hidden = unidades === 0;
-  document.getElementById("barra-cant").textContent = unidades + (unidades === 1 ? " producto" : " productos");
+  document.getElementById("barra-cant").textContent = unidades + (unidades === 1 ? " pieza" : " piezas");
   document.getElementById("barra-total").textContent = precio(total);
 }
+
+resumen.addEventListener("click", e => {
+  const b = e.target.closest("button[data-quitar]");
+  if (b) cambiarCantidad(b.dataset.quitar, -(cantidades[b.dataset.quitar] || 0));
+});
 
 // ---- Validacion y envio ----
 const form = document.getElementById("form-pedido");
