@@ -156,6 +156,13 @@ resumen.addEventListener("click", e => {
   if (b) cambiarCantidad(b.dataset.quitar, -(cantidades[b.dataset.quitar] || 0));
 });
 
+// En movil, la barra inferior se oculta cuando el panel del pedido ya esta a la vista
+const barra = document.getElementById("barra-movil");
+if ("IntersectionObserver" in window) {
+  new IntersectionObserver(([e]) => barra.classList.toggle("oculta", e.isIntersecting), { threshold: .15 })
+    .observe(document.getElementById("pedido"));
+}
+
 // ---- Validacion y envio ----
 const form = document.getElementById("form-pedido");
 const nombre = document.getElementById("nombre");
