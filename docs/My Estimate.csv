@@ -1,0 +1,23 @@
+﻿Estimate summary
+Upfront cost,Monthly cost,Total 12 months cost,Currency
+0,16.52,198.24,USD
+,,* Includes upfront cost
+
+
+Detailed Estimate
+Group hierarchy,Region,Description,Service,Upfront,Monthly,First 12 months total,Currency,Status,Configuration summary
+My Estimate,US East (N. Virginia),API REST,Amazon API Gateway,0,0.44,5.28,USD,,"HTTP API requests units (millions), Average size of each request (34 KB), REST API request units (millions), Cache memory size (GB) (None), WebSocket message units (thousands), Average message size (32 KB), Requests (0.1245 per month)"
+My Estimate,US East (N. Virginia),,AWS Lambda,0,0.12,1.44,USD,,"Architecture (x86), Amount of ephemeral storage allocated (512 MB), Architecture (x86), Invoke Mode (Buffered), Number of requests (124500 per month)"
+My Estimate,US East (N. Virginia),,DynamoDB on-demand capacity,0,0.51,6.12,USD,,"Table class (Standard), Average item size (all attributes) (1 KB), Data storage size (2 GB)"
+My Estimate,US East (N. Virginia),,DynamoDB Backup and restore,0,0.4,4.80,USD,,Point-In-Time Recovery (PITR) data storage (2 GB)
+My Estimate,US East (N. Virginia),,S3 Standard,0,0.23,2.76,USD,,S3 Standard storage (10 GB per month)
+My Estimate,US East (N. Virginia),,Amazon CloudFront,0,3.44,41.28,USD,,"Data transfer out to internet (39 GB per month), Number of requests (HTTPS) (124500 per month)"
+My Estimate,US East (N. Virginia),,Amazon CloudWatch,0,2.0135,24.16,USD,,"Number of mobile OTEL events and spans or spans per visit (70), Mobile sampling rate (1), Standard Logs: Data Ingested (3 GB), Number of Standard Resolution Alarm Metrics (5)"
+My Estimate,US East (N. Virginia),,AWS Secrets Manager,0,0.8,9.60,USD,,"Number of secrets (2), Average duration of each secret (30 days), Number of API calls (1 per month)"
+My Estimate,US East (N. Virginia),,AWS Web Application Firewall (WAF),0,8.07,96.84,USD,,"Number of Rules added per Web ACL (3 per month), Number of Web Access Control Lists (Web ACLs) utilized (1 per month)"
+My Estimate,US East (N. Virginia),,Amazon Route 53,0,0.5,6.00,USD,,Hosted Zones (1)
+
+
+
+Acknowledgement
+"* AWS Pricing Calculator provides only an estimate of your AWS fees and doesn't include any taxes that might apply. Your actual fees depend on a variety of factors, including your actual usage of AWS services."
