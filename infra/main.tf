@@ -56,7 +56,7 @@ resource "aws_dynamodb_table" "orders" {
 
 # ---------- Sitio estatico ----------
 resource "aws_s3_bucket" "site" {
-  bucket = "pan-de-la-casa-site"
+  bucket = "el-ultimo-capitulo-site"
 }
 
 # ---------- Lambda ----------

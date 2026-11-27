@@ -1,4 +1,4 @@
-# Pan de la Casa: MVP en la nube (sobre Floci)
+# Panadería El Último Capítulo: MVP en la nube (sobre Floci)
 
 Pedidos web para recoger. MVP: consultar el catalogo y registrar un pedido.
 

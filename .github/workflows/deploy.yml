@@ -1,4 +1,4 @@
-name: CI/CD Pan de la Casa
+name: CI/CD Panadería El Último Capítulo
 
 on:
   push:

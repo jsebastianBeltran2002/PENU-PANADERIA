@@ -1,4 +1,4 @@
-"""API de Pan de la Casa: catalogo y pedidos (Lambda + DynamoDB)."""
+"""API de Panadería El Último Capítulo: catalogo y pedidos (Lambda + DynamoDB)."""
 import json
 import os
 import re

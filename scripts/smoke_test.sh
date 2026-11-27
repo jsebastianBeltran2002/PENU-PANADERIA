@@ -6,7 +6,7 @@ API_URL=$(cat "$ROOT/.api_url")
 SITE_URL=$(cat "$ROOT/.site_url")
 
 echo "==> Sitio responde"
-curl -fsS "$SITE_URL" | grep -q "Pan de la Casa"
+curl -fsS "$SITE_URL" | grep -q "El Último Capítulo"
 
 echo "==> Catalogo responde con productos"
 curl -fsS "$API_URL/products" | python3 -c "import sys,json; d=json.load(sys.stdin); assert len(d)>0, 'catalogo vacio'"
