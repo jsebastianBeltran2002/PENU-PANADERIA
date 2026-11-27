@@ -323,6 +323,25 @@ input.invalido { border-color: var(--error); background: #fbefea; }
 .msg-error { background: #fbefea; color: var(--error); border: 1px solid #ebc8bd; }
 .msg strong { display: block; margin-bottom: .15rem; }
 
+/* ---------- Secciones de lectura ---------- */
+.seccion { max-width: 1120px; margin: 0 auto 2.5rem; padding: 0 1.25rem; }
+.seccion h2 { margin: .35rem 0 1.25rem; font-size: clamp(2rem, 4vw, 2.6rem); }
+
+.historia-grid { display: grid; grid-template-columns: 1fr 1.35fr; gap: 2.25rem; align-items: center; }
+.historia-texto p { margin: 0 0 1rem; }
+.capitular::first-letter {
+  float: left;
+  font-family: var(--titulos);
+  font-size: 4.2rem;
+  font-weight: 700;
+  line-height: .8;
+  padding: .35rem .5rem 0 0;
+  color: var(--roble);
+}
+.mapa { margin: 0; }
+.mapa svg { display: block; width: 100%; height: auto; filter: drop-shadow(0 8px 18px rgba(43, 27, 18, .18)); }
+.mapa figcaption { margin-top: .6rem; text-align: center; font-family: var(--titulos); font-style: italic; color: var(--tinta-suave); }
+
 /* ---------- Confirmacion: pagina de libro ---------- */
 .pagina {
   width: min(560px, calc(100% - 1.5rem));
@@ -435,6 +454,10 @@ input.invalido { border-color: var(--error); background: #fbefea; }
   .barra-movil .etiqueta { color: var(--dorado); font-size: .68rem; letter-spacing: .24em; }
   .barra-movil strong { font-family: var(--titulos); font-size: 1.3rem; }
   .barra-movil .boton { padding: .55rem 1rem; font-size: 1rem; }
+}
+
+@media (max-width: 900px) {
+  .historia-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 480px) {
