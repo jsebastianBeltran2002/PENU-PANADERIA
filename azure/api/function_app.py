@@ -84,4 +84,5 @@ def orders(req: func.HttpRequest) -> func.HttpResponse:
         "pickup_time": data["pickup_time"], "items": json.dumps(items),
         "created_at": now.isoformat(), "status": "RECIBIDO"})
     return _json({"order_id": order_id, "status": "RECIBIDO",
+                  "customer_name": data["customer_name"].strip(),
                   "pickup_time": data["pickup_time"], "items": items}, 201)
